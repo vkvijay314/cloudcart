@@ -17,7 +17,7 @@ function Login() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await api.post("/auth/login", form);
+      const res = await api.post("/api/auth/login", form);
       login(res.data.token, res.data.user); // 🔥 context
       navigate("/");
     } catch (err) {
@@ -34,7 +34,7 @@ function Login() {
       client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
       callback: async (response) => {
         try {
-          const res = await api.post("/auth/google", {
+          const res = await api.post("/api/auth/google", {
             token: response.credential
           });
           login(res.data.token, res.data.user); // 🔥 context
