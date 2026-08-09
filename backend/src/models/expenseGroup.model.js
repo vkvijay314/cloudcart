@@ -6,6 +6,11 @@ const expenseGroupSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    inviteCode: {
+      type: String,
+      unique: true,
+      sparse: true
+    },
     members: [
       {
         type: mongoose.Schema.Types.ObjectId,

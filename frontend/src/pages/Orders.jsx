@@ -38,160 +38,123 @@ function Orders() {
   const safeOrders = useMemo(() => {
     return orders.map((order) => ({
       id: order._id,
+      shortId: order._id.slice(-8).toUpperCase(),
       status: order.status || "placed",
       total: order.totalAmount || 0,
       date: order.createdAt
-        ? new Date(order.createdAt).toLocaleDateString()
+        ? new Date(order.createdAt).toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })
         : "",
       items: (order.items || []).map((item, index) => ({
         key: item.product?._id || index,
         name: item.name || item.product?.name || "Product",
         quantity: item.quantity || 1,
-        price: item.price || item.product?.price || 0
+        price: item.price || item.product?.price || 0,
+        image: item.product?.image || null
       }))
     }));
   }, [orders]);
 
-  if (loading) return <h3 style={styles.center}>Loading orders…</h3>;
-  if (error) return <h3 style={styles.center}>{error}</h3>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
+        <span className="material-symbols-outlined text-6xl text-error">error</span>
+        <h2 className="font-display text-2xl font-bold">{error}</h2>
+      </div>
+    );
+  }
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Your Orders</h2>
-
-      {safeOrders.length === 0 && (
-        <p style={styles.center}>No orders placed yet</p>
-      )}
-
-      {safeOrders.map((order) => (
-        <div key={order.id} style={styles.card}>
-          {/* HEADER */}
-          <div style={styles.header}>
-            <div>
-              <p style={styles.orderId}>
-                Order ID: <span>{order.id}</span>
-              </p>
-              <p style={styles.date}>Placed on: {order.date}</p>
-            </div>
-
-            <span
-              style={{
-                ...styles.status,
-                ...(order.status === "placed" ? styles.placed : {})
-              }}
-            >
-              {order.status.toUpperCase()}
-            </span>
-          </div>
-
-          {/* ITEMS */}
-          <div style={styles.items}>
-            {order.items.map((item) => (
-              <div key={item.key} style={styles.itemRow}>
-                <span style={styles.itemName}>{item.name}</span>
-                <span style={styles.itemQty}>× {item.quantity}</span>
-                <span style={styles.itemPrice}>
-                  ₹ {item.price * item.quantity}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* FOOTER */}
-          <div style={styles.footer}>
-            <span style={styles.totalLabel}>Order Total</span>
-            <span style={styles.totalAmount}>₹ {order.total}</span>
-          </div>
+    <div className="max-w-[1000px] mx-auto px-4 md:px-[48px] py-16">
+      <div className="flex justify-between items-end mb-10">
+        <div>
+          <h2 className="font-display text-3xl font-semibold text-on-surface mb-1">Your Orders</h2>
+          <p className="text-sm text-on-surface-variant">View and track your recent purchases</p>
         </div>
-      ))}
+      </div>
+
+      {safeOrders.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 bg-white rounded-3xl premium-shadow border border-gray-100">
+          <span className="material-symbols-outlined text-6xl text-outline-variant/40 mb-4 block">receipt_long</span>
+          <p className="text-lg text-on-surface-variant font-medium">No orders placed yet</p>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {safeOrders.map((order) => (
+            <div key={order.id} className="bg-white rounded-[24px] premium-shadow border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              
+              {/* Header */}
+              <div className="bg-surface-container-low px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100">
+                <div className="flex items-center gap-6">
+                  <div>
+                    <p className="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Order Placed</p>
+                    <p className="font-semibold text-sm">{order.date}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Total</p>
+                    <p className="font-semibold text-sm">₹{order.total}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Order #</p>
+                    <p className="font-semibold text-sm" title={order.id}>{order.shortId}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 self-start sm:self-auto">
+                  <span className={`px-3 py-1 text-xs font-bold rounded-full ${
+                    order.status === "placed" ? "bg-emerald-100 text-emerald-700" :
+                    order.status === "shipped" ? "bg-blue-100 text-blue-700" :
+                    "bg-gray-100 text-gray-700"
+                  }`}>
+                    {order.status.toUpperCase()}
+                  </span>
+                </div>
+              </div>
+
+              {/* Items */}
+              <div className="p-6">
+                <div className="space-y-6">
+                  {order.items.map((item) => (
+                    <div key={item.key} className="flex items-center justify-between gap-4 group">
+                      <div className="flex items-center gap-4 flex-grow">
+                        <div className="w-16 h-16 rounded-xl bg-surface-container flex items-center justify-center shrink-0 border border-outline-variant/30 overflow-hidden">
+                          {item.image ? (
+                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="material-symbols-outlined text-outline-variant/50">inventory_2</span>
+                          )}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-on-surface group-hover:text-primary transition-colors">{item.name}</h4>
+                          <p className="text-sm text-on-surface-variant">Qty: {item.quantity}</p>
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="font-bold">₹{item.price * item.quantity}</span>
+                        <p className="text-xs text-on-surface-variant">₹{item.price} each</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
-
-/* ==============================
-   STYLES
-============================== */
-const styles = {
-  container: {
-    maxWidth: "900px",
-    margin: "30px auto",
-    padding: "0 15px"
-  },
-  heading: {
-    marginBottom: "20px"
-  },
-  center: {
-    textAlign: "center",
-    padding: "20px"
-  },
-  card: {
-    background: "#fff",
-    borderRadius: "12px",
-    boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
-    padding: "16px",
-    marginBottom: "20px"
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    borderBottom: "1px solid #eee",
-    paddingBottom: "10px",
-    marginBottom: "10px"
-  },
-  orderId: {
-    fontWeight: "600",
-    marginBottom: "4px"
-  },
-  date: {
-    fontSize: "13px",
-    color: "#666"
-  },
-  status: {
-    padding: "4px 10px",
-    borderRadius: "20px",
-    fontSize: "12px",
-    fontWeight: "600",
-    background: "#e5e7eb",
-    color: "#111"
-  },
-  placed: {
-    background: "#dcfce7",
-    color: "#166534"
-  },
-  items: {
-    marginTop: "10px"
-  },
-  itemRow: {
-    display: "grid",
-    gridTemplateColumns: "1fr auto auto",
-    gap: "10px",
-    padding: "8px 0",
-    borderBottom: "1px dashed #eee"
-  },
-  itemName: {
-    fontWeight: "500"
-  },
-  itemQty: {
-    color: "#555"
-  },
-  itemPrice: {
-    fontWeight: "600"
-  },
-  footer: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: "12px"
-  },
-  totalLabel: {
-    fontSize: "14px",
-    color: "#555"
-  },
-  totalAmount: {
-    fontSize: "18px",
-    fontWeight: "700"
-  }
-};
 
 export default Orders;

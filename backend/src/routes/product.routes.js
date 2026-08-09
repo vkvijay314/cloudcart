@@ -10,6 +10,8 @@ import {
 import { protect } from "../middlewares/auth.middleware.js";
 import { authorizeRoles } from "../middlewares/role.middleware.js";
 import upload from "../middlewares/upload.middleware.js";
+import { validate } from "../middlewares/validate.middleware.js";
+import { createProductSchema, updateProductSchema } from "../utils/validation.schemas.js";
 
 const router = Router();
 
@@ -22,7 +24,8 @@ router.post(
   "/",
   protect,
   authorizeRoles("admin"),
-  upload.single("image"), // ✅ MUST BE HERE
+  upload.single("image"), // ✅ MUST BE HERE (parses form fields into req.body)
+  validate(createProductSchema),
   createProduct
 );
 
@@ -31,9 +34,11 @@ router.put(
   protect,
   authorizeRoles("admin"),
   upload.single("image"),
+  validate(updateProductSchema),
   updateProduct
 );
 
 router.delete("/:id", protect, authorizeRoles("admin"), deleteProduct);
 
 export default router;
+
