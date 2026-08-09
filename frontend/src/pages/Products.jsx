@@ -90,9 +90,11 @@ function Products() {
     addToCartMutation.mutate(productId);
   };
 
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
   return (
-    <div className="max-w-[1440px] mx-auto px-4 md:px-[48px] py-16 flex gap-6">
-      {/* ── Sidebar Filters ── */}
+    <div className="max-w-[1440px] mx-auto px-4 md:px-[48px] py-8 sm:py-16 flex gap-6">
+      {/* ── Desktop Sidebar Filters ── */}
       <aside className="hidden lg:flex flex-col w-64 shrink-0 gap-8">
         <div>
           <h3 className="font-display text-2xl font-semibold mb-2">Filters</h3>
@@ -152,40 +154,127 @@ function Products() {
 
       {/* ── Product Grid ── */}
       <div className="flex-1">
-        <header className="flex justify-between items-end mb-10">
+        <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-10">
           <div>
-            <h2 className="font-display text-3xl font-semibold text-on-surface mb-1">All Products</h2>
+            <h2 className="font-display text-2xl sm:text-3xl font-semibold text-on-surface mb-1">All Products</h2>
             <p className="text-sm text-on-surface-variant">
               Showing {products.length} product{products.length !== 1 ? "s" : ""}
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-semibold text-on-surface-variant">Sort by:</span>
-            <select 
-              value={sort}
-              onChange={(e) => setSort(e.target.value)}
-              className="bg-transparent border-none text-sm font-semibold text-primary focus:ring-0 cursor-pointer"
+          <div className="flex items-center justify-between sm:justify-end gap-3">
+            {/* Mobile Filter Button */}
+            <button
+              onClick={() => setMobileFiltersOpen(true)}
+              className="lg:hidden flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-container-low border border-outline-variant/40 text-sm font-bold text-on-surface hover:bg-surface-container transition-all"
             >
-              <option value="Recommended">Recommended</option>
-              <option value="Price: Low to High">Price: Low to High</option>
-              <option value="Price: High to Low">Price: High to Low</option>
-              <option value="Newest Arrivals">Newest Arrivals</option>
-            </select>
+              <span className="material-symbols-outlined text-lg">tune</span>
+              <span>Filters</span>
+            </button>
+
+            <div className="flex items-center gap-2">
+              <span className="text-xs sm:text-sm font-semibold text-on-surface-variant">Sort:</span>
+              <select 
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+                className="bg-surface-container-low sm:bg-transparent border border-outline-variant/30 sm:border-none rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold text-primary focus:ring-0 cursor-pointer"
+              >
+                <option value="Recommended">Recommended</option>
+                <option value="Price: Low to High">Price: Low to High</option>
+                <option value="Price: High to Low">Price: High to Low</option>
+                <option value="Newest Arrivals">Newest Arrivals</option>
+              </select>
+            </div>
           </div>
         </header>
 
-        {/* Mobile Search */}
+        {/* Mobile Search Bar */}
         <div className="lg:hidden mb-6">
           <div className="relative">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+            <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
             <input
               className="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
-              placeholder="Search products..."
+              placeholder="Search products by name or tag..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
         </div>
+
+        {/* Mobile Filter Modal Drawer */}
+        {mobileFiltersOpen && (
+          <div className="fixed inset-0 z-50 flex flex-col justify-end bg-black/50 backdrop-blur-sm lg:hidden animate-in fade-in duration-200">
+            <div className="bg-surface-container-lowest rounded-t-[2rem] p-6 space-y-6 max-h-[85vh] overflow-y-auto border-t border-outline-variant/30 shadow-2xl animate-in slide-in-from-bottom duration-300">
+              <div className="flex justify-between items-center pb-3 border-b border-outline-variant/20">
+                <h3 className="font-display text-xl font-bold text-on-surface">Filters & Categories</h3>
+                <button
+                  onClick={() => setMobileFiltersOpen(false)}
+                  className="p-2 rounded-full hover:bg-surface-container-low text-on-surface-variant"
+                >
+                  <span className="material-symbols-outlined text-xl">close</span>
+                </button>
+              </div>
+
+              {/* Categories */}
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-outline mb-3">Categories</h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {["All Products", "Electronics", "Clothing", "Lifestyle"].map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setCategory(cat)}
+                      className={`py-2.5 px-4 rounded-xl text-sm font-semibold border transition-all text-left ${
+                        category === cat
+                          ? "bg-primary text-on-primary border-primary shadow-sm"
+                          : "bg-surface-container-low border-outline-variant/30 text-on-surface-variant hover:border-primary/50"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Price Range */}
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-outline mb-3">
+                  Max Price: ₹{priceRange < 10000 ? priceRange : "10,000+"}
+                </h4>
+                <input 
+                  type="range" 
+                  min="0"
+                  max="10000"
+                  step="500"
+                  value={priceRange}
+                  onChange={(e) => setPriceRange(Number(e.target.value))}
+                  className="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" 
+                />
+                <div className="flex justify-between mt-2 text-xs text-on-surface-variant font-medium">
+                  <span>₹0</span>
+                  <span>₹10,000+</span>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-outline-variant/20 flex gap-3">
+                <button
+                  onClick={() => {
+                    setCategory("All Products");
+                    setSearch("");
+                    setPriceRange(10000);
+                  }}
+                  className="flex-1 py-3 px-4 rounded-xl border border-outline-variant text-on-surface text-sm font-bold hover:bg-surface-container-low transition-all"
+                >
+                  Reset
+                </button>
+                <button
+                  onClick={() => setMobileFiltersOpen(false)}
+                  className="flex-1 py-3 px-4 rounded-xl bg-primary text-on-primary text-sm font-bold shadow-md shadow-primary/20 hover:bg-primary-container transition-all"
+                >
+                  Apply Filters
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {loading ? (
           <div className="flex items-center justify-center h-64">
@@ -193,11 +282,11 @@ function Products() {
           </div>
         ) : products.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-on-surface-variant">
-            <span className="material-symbols-outlined text-6xl mb-4">inventory_2</span>
+            <span className="material-symbols-outlined text-6xl mb-4 text-outline">inventory_2</span>
             <p className="text-lg font-semibold">No products found</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
             {products.map((product) => {
               const isWishlisted = wishlist.some(item => item._id === product._id || item === product._id);
               

@@ -161,3 +161,41 @@
   position: sticky;
   top: 100px;
 }
+
+@media (max-width: 1023px) {
+  .floating-summary {
+    position: static;
+  }
+}
+
+/* ── Mobile Drawer Slide Animation ── */
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Mobile Touch Targets & Utilities ── */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Prevent horizontal scroll leakage on narrow mobile viewports */
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Make images responsive by default */
+img {
+  max-width: 100%;
+  height: auto;
+}
+

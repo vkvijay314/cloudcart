@@ -47,12 +47,12 @@ function Register() {
 
     window.google.accounts.id.renderButton(
       document.getElementById("google-register-btn"),
-      { theme: "outline", size: "large", text: "continue_with", width: 320 }
+      { theme: "outline", size: "large", text: "continue_with", width: Math.min(320, window.innerWidth - 64) }
     );
   }, [login, navigate]);
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-[85vh] flex items-center justify-center py-6 sm:py-12 px-3 sm:px-6 lg:px-8 relative overflow-hidden">
       
       {/* Background Glows */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
@@ -60,7 +60,7 @@ function Register() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/20 blur-[120px] rounded-full mix-blend-multiply"></div>
       </div>
 
-      <div className="w-full max-w-md space-y-8 glass-card p-10 rounded-[2rem] premium-shadow border border-white/50 relative z-10">
+      <div className="w-full max-w-md space-y-6 sm:space-y-8 glass-card p-6 sm:p-8 md:p-10 rounded-[1.5rem] sm:rounded-[2rem] premium-shadow border border-white/50 relative z-10">
         <div className="text-center">
           <h2 className="font-display mt-2 text-3xl font-bold tracking-tight text-on-surface">
             Create an account

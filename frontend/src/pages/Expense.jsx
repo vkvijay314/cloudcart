@@ -327,7 +327,7 @@ function Expense() {
   const youOwe = personalBalance < 0 ? Math.abs(personalBalance) : 0;
 
   return (
-    <div className="max-w-[1440px] mx-auto px-4 md:px-[48px] py-10 grid grid-cols-1 lg:grid-cols-12 gap-8 font-sans">
+    <div className="max-w-[1440px] mx-auto px-4 md:px-[48px] py-6 sm:py-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 font-sans">
       
       {/* ── Left Sidebar: Group Selection & Creation ── */}
       <aside className="lg:col-span-4 space-y-6">

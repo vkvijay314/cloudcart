@@ -189,9 +189,9 @@ function ProductDetail() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex items-center border-2 border-outline-variant/50 rounded-xl bg-surface-bright p-1">
+              <div className="flex items-center justify-between sm:justify-start border-2 border-outline-variant/50 rounded-xl bg-surface-bright p-1 w-full sm:w-auto">
                 <button 
-                  className="w-12 h-12 flex items-center justify-center hover:bg-surface-container-low hover:text-primary transition-colors rounded-lg material-symbols-outlined disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+                  className="w-12 h-12 flex items-center justify-center hover:bg-surface-container-low hover:text-primary transition-colors rounded-lg material-symbols-outlined disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed cursor-pointer"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   disabled={isOutOfStock || quantity <= 1}
                 >
@@ -199,7 +199,7 @@ function ProductDetail() {
                 </button>
                 <span className="w-12 text-center font-bold text-xl">{quantity}</span>
                 <button 
-                  className="w-12 h-12 flex items-center justify-center hover:bg-surface-container-low hover:text-primary transition-colors rounded-lg material-symbols-outlined disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+                  className="w-12 h-12 flex items-center justify-center hover:bg-surface-container-low hover:text-primary transition-colors rounded-lg material-symbols-outlined disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed cursor-pointer"
                   onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
                   disabled={isOutOfStock || quantity >= product.stock}
                 >
@@ -207,31 +207,34 @@ function ProductDetail() {
                 </button>
               </div>
 
-              <button 
-                onClick={handleAddToCart}
-                disabled={isOutOfStock || addToCartMutation.isPending}
-                className="flex-1 py-4 bg-primary text-on-primary rounded-xl font-bold text-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:pointer-events-none"
-              >
-                {addToCartMutation.isPending ? (
-                  <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <span className="material-symbols-outlined">shopping_cart</span>
-                    {isOutOfStock ? "Sold Out" : "Add to Cart"}
-                  </>
-                )}
-              </button>
-              
-              <button 
-                onClick={handleToggleWishlist}
-                className={`w-16 h-[60px] border-2 rounded-xl flex items-center justify-center transition-all ${
-                  isWishlisted 
-                    ? "border-red-500 bg-red-50 text-red-500" 
-                    : "border-outline-variant/50 text-on-surface-variant hover:text-red-500 hover:border-red-200 hover:bg-red-50"
-                }`}
-              >
-                <span className="material-symbols-outlined text-2xl" style={isWishlisted ? { fontVariationSettings: "'FILL' 1" } : {}}>favorite</span>
-              </button>
+              <div className="flex items-center gap-3 w-full flex-1">
+                <button 
+                  onClick={handleAddToCart}
+                  disabled={isOutOfStock || addToCartMutation.isPending}
+                  className="flex-1 py-4 bg-primary text-on-primary rounded-xl font-bold text-base sm:text-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
+                >
+                  {addToCartMutation.isPending ? (
+                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined">shopping_cart</span>
+                      {isOutOfStock ? "Sold Out" : "Add to Cart"}
+                    </>
+                  )}
+                </button>
+                
+                <button 
+                  onClick={handleToggleWishlist}
+                  aria-label="Wishlist"
+                  className={`w-14 sm:w-16 h-[56px] sm:h-[60px] border-2 rounded-xl flex items-center justify-center transition-all shrink-0 cursor-pointer ${
+                    isWishlisted 
+                      ? "border-red-500 bg-red-50 text-red-500" 
+                      : "border-outline-variant/50 text-on-surface-variant hover:text-red-500 hover:border-red-200 hover:bg-red-50"
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-2xl" style={isWishlisted ? { fontVariationSettings: "'FILL' 1" } : {}}>favorite</span>
+                </button>
+              </div>
             </div>
           </div>
 

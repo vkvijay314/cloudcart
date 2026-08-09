@@ -118,63 +118,78 @@ function Cart() {
                 </button>
               </div>
             ) : (
-              <div className="divide-y divide-gray-50">
+              <div className="divide-y divide-gray-100">
                 {cartItems.map(item => (
                   <div
                     key={item.productId}
-                    className="p-6 flex flex-col md:flex-row items-center gap-6 group hover:bg-surface-container-low transition-all duration-200"
+                    className="p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 group hover:bg-surface-container-low transition-all duration-200"
                   >
-                    {/* Image */}
-                    <div className="w-24 h-24 rounded-lg overflow-hidden bg-surface-container shrink-0">
-                      {item.image ? (
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <span className="material-symbols-outlined text-3xl text-outline-variant/40">inventory_2</span>
-                        </div>
-                      )}
+                    <div className="flex items-center gap-4 w-full sm:w-auto">
+                      {/* Image */}
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-surface-container shrink-0 border border-outline-variant/30">
+                        {item.image ? (
+                          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <span className="material-symbols-outlined text-3xl text-outline-variant/40">inventory_2</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Details */}
+                      <div className="flex-grow">
+                        <h3 className="text-base sm:text-lg font-bold text-on-surface leading-snug">{item.name}</h3>
+                        <p className="text-xs text-on-surface-variant mb-1">{item.category}</p>
+                        {item.stock < item.quantity && (
+                          <p className="text-[11px] font-bold text-error bg-error-container/30 px-2 py-0.5 rounded inline-flex items-center gap-1">
+                             <span className="material-symbols-outlined text-[14px]">error</span>
+                             {item.stock === 0 ? "Out of Stock" : `Only ${item.stock} available`}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Delete button (Mobile Top Right) */}
+                      <button
+                        className="sm:hidden material-symbols-outlined text-error p-2 hover:bg-error-container/40 rounded-full transition-all cursor-pointer"
+                        disabled={updatingId === item.productId}
+                        onClick={() => removeFromCart(item.productId)}
+                        aria-label="Remove item"
+                      >
+                        delete
+                      </button>
                     </div>
 
-                    {/* Details */}
-                    <div className="flex-grow">
-                      <h3 className="text-lg font-bold text-on-surface">{item.name}</h3>
-                      <p className="text-xs text-on-surface-variant mb-1">{item.category}</p>
-                      {item.stock < item.quantity && (
-                        <p className="text-xs font-bold text-error bg-error-container/30 px-2 py-0.5 rounded inline-flex items-center gap-1">
-                           <span className="material-symbols-outlined text-[14px]">error</span>
-                           {item.stock === 0 ? "Out of Stock" : `Only ${item.stock} available`}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Quantity + Price + Delete */}
-                    <div className="flex items-center gap-6">
-                      <div className="flex items-center border border-outline-variant rounded-lg bg-surface-bright">
+                    {/* Quantity + Price + Delete (Desktop) */}
+                    <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-outline-variant/20">
+                      <div className="flex items-center border border-outline-variant/50 rounded-xl bg-surface-bright p-0.5">
                         <button
-                          className="p-2 hover:text-primary transition-colors material-symbols-outlined disabled:opacity-40"
+                          className="p-1.5 hover:text-primary transition-colors material-symbols-outlined disabled:opacity-40 cursor-pointer"
                           disabled={updatingId === item.productId || item.quantity <= 1}
                           onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+                          aria-label="Decrease quantity"
                         >
                           remove
                         </button>
-                        <span className="px-4 text-sm font-bold text-on-surface">{item.quantity}</span>
+                        <span className="px-3 text-sm font-bold text-on-surface min-w-[24px] text-center">{item.quantity}</span>
                         <button
-                          className="p-2 hover:text-primary transition-colors material-symbols-outlined disabled:opacity-40"
+                          className="p-1.5 hover:text-primary transition-colors material-symbols-outlined disabled:opacity-40 cursor-pointer"
                           disabled={updatingId === item.productId || item.quantity >= item.stock}
                           onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                          aria-label="Increase quantity"
                         >
                           add
                         </button>
                       </div>
 
-                      <div className="w-28 text-right">
-                        <span className="font-bold text-on-surface">₹{item.price * item.quantity}</span>
+                      <div className="text-right sm:w-28">
+                        <span className="font-bold text-base sm:text-lg text-on-surface">₹{item.price * item.quantity}</span>
                       </div>
 
                       <button
-                        className="material-symbols-outlined text-error p-2 hover:bg-error-container rounded-full transition-all opacity-0 group-hover:opacity-100"
+                        className="hidden sm:block material-symbols-outlined text-error p-2 hover:bg-error-container/40 rounded-full transition-all sm:opacity-0 group-hover:opacity-100 cursor-pointer"
                         disabled={updatingId === item.productId}
                         onClick={() => removeFromCart(item.productId)}
+                        aria-label="Remove item"
                       >
                         delete
                       </button>

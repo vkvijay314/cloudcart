@@ -14,39 +14,40 @@ function Home() {
   return (
     <>
       {/* ── Hero Section ── */}
-      <header className="relative min-h-[85vh] flex items-center pt-16 overflow-hidden hero-glow">
-        <div className="w-full px-4 md:px-[48px] max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center z-10">
+      <header className="relative min-h-[75vh] sm:min-h-[85vh] flex items-center py-8 sm:py-16 overflow-hidden hero-glow">
+        <div className="w-full px-4 md:px-[48px] max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center z-10">
           <div className="max-w-2xl">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-primary-container/10 text-primary font-semibold text-xs mb-6 border border-primary/20">
-              All-in-one Commerce
+            <span className="inline-block px-3.5 py-1.5 rounded-full bg-primary-container/10 text-primary font-bold text-xs mb-4 sm:mb-6 border border-primary/20">
+              All-in-one Commerce & Expense Platform
             </span>
-            <h1 className="font-display text-4xl md:text-5xl font-bold mb-6 text-on-surface leading-tight tracking-tight">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-on-surface leading-tight tracking-tight">
               Shop Smarter. <br />
               <span className="text-primary">Manage Expenses Better.</span>
             </h1>
-            <p className="text-lg text-on-surface-variant mb-10 max-w-lg leading-relaxed">
+            <p className="text-base sm:text-lg text-on-surface-variant mb-6 sm:mb-10 max-w-lg leading-relaxed">
               CloudCart helps teams and individuals shop online, manage orders, and split expenses effortlessly with enterprise-grade financial tools.
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
               <Link
                 to="/products"
-                className="bg-primary text-on-primary px-10 py-4 rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-95"
+                className="w-full sm:w-auto text-center bg-primary text-on-primary px-8 py-3.5 sm:py-4 rounded-xl font-bold text-sm hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-95"
               >
                 Start Shopping
               </Link>
               <Link
                 to="/expense"
-                className="bg-white border border-outline-variant text-on-surface px-10 py-4 rounded-xl font-semibold text-sm hover:bg-surface-container-low transition-all active:scale-95"
+                className="w-full sm:w-auto text-center bg-white border border-outline-variant text-on-surface px-8 py-3.5 sm:py-4 rounded-xl font-bold text-sm hover:bg-surface-container-low transition-all active:scale-95"
               >
                 Split Expenses
               </Link>
             </div>
-            <div className="mt-10 flex items-center gap-6 grayscale opacity-50">
-              <span className="text-xs text-outline uppercase tracking-widest">Trusted by</span>
-              <div className="flex gap-8">
-                <span className="font-display font-bold text-2xl">VELOCITY</span>
-                <span className="font-display font-bold text-2xl">AURORA</span>
-                <span className="font-display font-bold text-2xl">PULSE</span>
+            
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 grayscale opacity-60">
+              <span className="text-[10px] font-bold text-outline uppercase tracking-widest">Trusted by Teams at</span>
+              <div className="flex items-center gap-6 overflow-x-auto pb-1">
+                <span className="font-display font-bold text-xl sm:text-2xl tracking-wider">VELOCITY</span>
+                <span className="font-display font-bold text-xl sm:text-2xl tracking-wider">AURORA</span>
+                <span className="font-display font-bold text-xl sm:text-2xl tracking-wider">PULSE</span>
               </div>
             </div>
           </div>

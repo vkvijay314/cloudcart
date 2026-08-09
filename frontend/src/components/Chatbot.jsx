@@ -153,15 +153,15 @@ function Chatbot() {
       {/* FLOATING ACTION BUBBLE BUTTON */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-tr from-primary to-secondary text-white shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-primary to-secondary text-white shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer"
         aria-label="Toggle chatbot"
       >
         {isOpen ? (
-          <span className="material-symbols-outlined text-[28px] transition-transform duration-300 rotate-90">
+          <span className="material-symbols-outlined text-[24px] sm:text-[28px] transition-transform duration-300 rotate-90">
             close
           </span>
         ) : (
-          <div className="relative w-7 h-7 flex items-center justify-center">
+          <div className="relative w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center">
             {/* Custom glowing AI vector logo */}
             <svg className="w-full h-full text-white animate-pulse" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" fill="currentColor" stroke="currentColor" strokeWidth="1" strokeLinejoin="round"/>
@@ -176,7 +176,7 @@ function Chatbot() {
 
       {/* CHAT DRAWER */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 flex flex-col w-96 max-w-[calc(100vw-2rem)] h-[550px] max-h-[calc(100vh-8rem)] glass-card rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300 border border-outline-variant/30">
+        <div className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50 flex flex-col w-[calc(100vw-2rem)] sm:w-96 h-[75vh] sm:h-[550px] max-h-[580px] glass-card rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300 border border-outline-variant/30">
           
           {/* Header */}
           <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-primary to-secondary text-white">
