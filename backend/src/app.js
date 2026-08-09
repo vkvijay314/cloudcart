@@ -23,6 +23,9 @@ import { errorHandler } from "./middlewares/error.middleware.js";
 
 const app = express();
 
+// 🌐 Trust proxy (required for Railway, Render, etc. behind reverse proxies)
+app.set("trust proxy", 1);
+
 /* GLOBAL MIDDLEWARES */
 
 // 🔒 Security headers
